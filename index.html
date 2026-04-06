@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coaching Expense Analyzer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12" data-aos="fade-down">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">Coaching Expense Analyzer</h1>
+            <p class="text-xl text-gray-600">Visual insights into your coaching expenses and savings</p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <!-- Summary Cards -->
+            <div class="bg-white rounded-lg shadow-lg p-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-gray-500 font-medium">Total Money Spent</h3>
+                        <p class="text-3xl font-bold text-blue-600">Rs 29,100</p>
+                    </div>
+                    <div class="p-3 bg-blue-100 rounded-full">
+                        <i data-feather="dollar-sign" class="text-blue-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-gray-500 font-medium">Total Savings</h3>
+                        <p class="text-3xl font-bold text-green-600">Rs 9,340</p>
+                    </div>
+                    <div class="p-3 bg-green-100 rounded-full">
+                        <i data-feather="trending-up" class="text-green-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-gray-500 font-medium">Total Off Days</h3>
+                        <p class="text-3xl font-bold text-purple-600">67 Days</p>
+                    </div>
+                    <div class="p-3 bg-purple-100 rounded-full">
+                        <i data-feather="calendar" class="text-purple-600"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            <!-- Monthly Expenses Chart -->
+            <div class="bg-white rounded-lg shadow-lg p-6" data-aos="fade-right">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Monthly Expenses</h2>
+                <div class="chart-container">
+                    <canvas id="monthlyExpensesChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Daily Savings Chart -->
+            <div class="bg-white rounded-lg shadow-lg p-6" data-aos="fade-left">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Daily Savings Pattern</h2>
+                <div class="chart-container">
+                    <canvas id="savingsChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coaching Analysis -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            <!-- Coaching Comparison -->
+            <div class="bg-white rounded-lg shadow-lg p-6" data-aos="fade-right">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Coaching Institution Analysis</h2>
+                <div class="chart-container">
+                    <canvas id="coachingComparisonChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Expense Breakdown -->
+            <div class="bg-white rounded-lg shadow-lg p-6" data-aos="fade-left">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Transport Expense Breakdown</h2>
+                <div class="chart-container">
+                    <canvas id="expenseBreakdownChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8" data-aos="fade-up">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">Insights & Recommendations</h2>
+            <div class="space-y-4">
+                <div class="flex items-start">
+                    <div class="p-2 bg-yellow-100 rounded-full mr-4">
+                        <i data-feather="alert-circle" class="text-yellow-600"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-gray-800 mb-1">Highest Expense Month</h3>
+                        <p class="text-gray-600">February had the highest expenses of Rs 5,400 due to continuous coaching days with fewer off days.</p>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <div class="p-2 bg-green-100 rounded-full mr-4">
+                        <i data-feather="thumbs-up" class="text-green-600"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-gray-800 mb-1">Most Savings</h3>
+                        <p class="text-gray-600">May had the highest savings of Rs 1,180 from bus cash, suggesting efficient transport usage.</p>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <div class="p-2 bg-blue-100 rounded-full mr-4">
+                        <i data-feather="info" class="text-blue-600"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-gray-800 mb-1">Coaching Preference</h3>
+                        <p class="text-gray-600">Bahadurabad SMIT was visited more frequently (89 days) compared to Zaitoon Ashraf IT Park (41 days).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize animations
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true
+            });
+
+            feather.replace();
+
+            // Monthly Expenses Chart
+            const monthlyExpensesCtx = document.getElementById('monthlyExpensesChart').getContext('2d');
+            const monthlyExpensesChart = new Chart(monthlyExpensesCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['February', 'March', 'April', 'May', 'June', 'July', 'August', 'Sept'],
+                    datasets: [{
+                        label: 'Money Spent',
+                        data: [5400, 4500, 5100, 7800, 7800, 8100, 4800, 3300],
+                        backgroundColor: 'rgba(99, 102, 241, 0.7)',
+                        borderColor: 'rgba(99, 102, 241, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return 'Rs ' + context.raw;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'Rs ' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Savings Chart
+            const savingsCtx = document.getElementById('savingsChart').getContext('2d');
+            const savingsChart = new Chart(savingsCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept'],
+                    datasets: [{
+                        label: 'Savings from Bus Cash',
+                        data: [200, 480, 400, 1180, 1160, 940, 880, 1020],
+                        backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                        borderColor: 'rgba(16, 185, 129, 1)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return 'Rs ' + context.raw;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'Rs ' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Coaching Comparison Chart
+            const coachingCtx = document.getElementById('coachingComparisonChart').getContext('2d');
+            const coachingChart = new Chart(coachingCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Bahadurabad SMIT', 'Zaitoon Ashraf IT Park'],
+                    datasets: [{
+                        data: [89, 41],
+                        backgroundColor: [
+                            'rgba(99, 102, 241, 0.7)',
+                            'rgba(244, 63, 94, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(99, 102, 241, 1)',
+                            'rgba(244, 63, 94, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.raw + ' days';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Expense Breakdown Chart
+            const expenseCtx = document.getElementById('expenseBreakdownChart').getContext('2d');
+            const expenseChart = new Chart(expenseCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Actual Expenses', 'Potential Savings'],
+                    datasets: [{
+                        data: [29100, 9340],
+                        backgroundColor: [
+                            'rgba(239, 68, 68, 0.7)',
+                            'rgba(16, 185, 129, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(239, 68, 68, 1)',
+                            'rgba(16, 185, 129, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': Rs ' + context.raw;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
